@@ -7,11 +7,16 @@ with open("brightest_stars.csv", "r") as f:
     csvreader = csv.reader(f)
     for row in csvreader: 
         brightest_stars.append(row)
+    del brightest_stars["luminosity"]
 
 with open("brown_dwarfs.csv", "r") as f:
     csvreader = csv.reader(f)
     for row in csvreader: 
         brown_dwarfs.append(row)
+
+brown_dwarfs = brown_dwarfs.rename({
+    'constellation': 'const.'
+}, axis = 'columns')
 
 headers_1 = brightest_stars[0]
 data_1 = brightest_stars[1:]
