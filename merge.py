@@ -44,6 +44,26 @@ data = []
 for index, data_row in enumerate(data_1):
     data.append(data_1[index] + data_2[index])
 
+temp_planet_data_rows = list(data)
+for planet_data in temp_planet_data_rows:
+  if planet_data[1].lower() == "hd 100546 b":
+    data.remove(planet_data)
+
+planet_masses = []
+planet_radiuses = []
+planet_names = []
+for planet_data in data:
+  planet_masses.append(planet_data[3])
+  planet_radiuses.append(planet_data[7])
+  planet_names.append(planet_data[1])
+planet_gravity = []
+for index, name in enumerate(planet_names):
+  gravity = (float(planet_masses[index])*5.972e+24) / (float(planet_radiuses[index])*float(planet_radiuses[index])*6371000*6371000) * 6.674e-11
+  planet_gravity.append(gravity)
+
+fig = px.scatter(x=planet_radiuses, y=planet_masses, size=planet_gravity, hover_data=[planet_names])
+fig.show()
+
 with open("merge.csv", "a+") as f:
     csvwriter = csv.writer(f)
     csvwriter.writerow(headers)
