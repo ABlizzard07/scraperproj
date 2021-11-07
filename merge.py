@@ -1,4 +1,7 @@
 import csv
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 brightest_stars = []
 brown_dwarfs = []
@@ -63,6 +66,30 @@ for index, name in enumerate(planet_names):
 
 fig = px.scatter(x=planet_radiuses, y=planet_masses, size=planet_gravity, hover_data=[planet_names])
 fig.show()
+
+# Clustering 
+
+X = []
+for index, planet_mass in enumerate(planet_masses):
+  temp_list = [
+                  planet_radiuses[index],
+                  planet_mass
+              ]
+  X.append(temp_list)
+
+wcss = []
+for d in range(1, 11):
+    kmeans = KMeans(n_clusters=d, init='k-means++', random_state = 42)
+    kmeans.fit(X)
+    # inertia method returns wcss for that model
+    wcss.append(kmeans.inertia_)
+
+plt.figure(figsize=(10,5))
+sns.lineplot(range(1, 11), wcss, marker='o', color='blue')
+plt.title('Elbow Method')
+plt.xlabel('# of clusters')
+plt.ylabel('WCSS')
+plt.show()
 
 with open("merge.csv", "a+") as f:
     csvwriter = csv.writer(f)
