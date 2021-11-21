@@ -55,11 +55,14 @@ for planet_data in temp_planet_data_rows:
 planet_masses = []
 planet_radiuses = []
 planet_names = []
+
 for planet_data in data:
   planet_masses.append(planet_data[3])
   planet_radiuses.append(planet_data[7])
   planet_names.append(planet_data[1])
+
 planet_gravity = []
+
 for index, name in enumerate(planet_names):
   gravity = (float(planet_masses[index])*5.972e+24) / (float(planet_radiuses[index])*float(planet_radiuses[index])*6371000*6371000) * 6.674e-11
   planet_gravity.append(gravity)
@@ -90,6 +93,25 @@ plt.title('Elbow Method')
 plt.xlabel('# of clusters')
 plt.ylabel('WCSS')
 plt.show()
+
+final_planet_list = []
+
+for planet_data in planet_data_rows:
+  temp_dict = {
+                  "name": planet_data[1],
+                  "distance_from_earth": planet_data[2],
+                  "planet_mass": planet_data[3],
+                  "planet_type": planet_data[6],
+                  "planet_radius": planet_data[7],
+                  "distance_from_their_sun": planet_data[8],
+                  "orbital_period": planet_data[9],
+                  "gravity": planet_data[20],
+                  "orbital_speed": planet_data[21]
+              }
+  temp_dict["specifications"] = final_dict[planet_data[1]]
+  final_planet_list.append(temp_dict)
+
+print(final_planet_list)
 
 with open("merge.csv", "a+") as f:
     csvwriter = csv.writer(f)
